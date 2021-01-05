@@ -37,9 +37,8 @@ class BlottoSkill(MycroftSkill):
         self.conversation_active = True
         while response is not None and self.conversation_active:
             messages = self.fetch_blotto_response(response)
-            if len(messages) > 1:
-                for blotto_message in messages[:-1]:
-                    self.speak(blotto_message)
+            if len(messages) > 1:                
+                self.speak(messages)
             if len(messages) == 0:
                 messages = ["no response from blotto"]
             response = self.handle_final_output(messages[-1])
