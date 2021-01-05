@@ -107,7 +107,7 @@ class BlottoSkill(MycroftSkill):
             return [{"text": "Schüps"}]
         messages = self.hit_blotto(utterance)
         print(messages)
-        return messages["text"]
+        return messages
 
     def stop(self):
         self.conversation_active = False
@@ -119,7 +119,7 @@ class BlottoSkill(MycroftSkill):
             self.append_endpoint, data=utterance
         )
        
-        return append_response.json()
+        return append_response.json().get('text')
 
 
 def create_skill():
