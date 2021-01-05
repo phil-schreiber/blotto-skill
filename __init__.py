@@ -26,7 +26,7 @@ class BlottoSkill(MycroftSkill):
     def __init__(self):
         super(BlottoSkill, self).__init__(name="BlottoSkill")
         self.conversation_active = False
-        self.blotto_host = "http://ef3544900e59.ngrok.io"
+        self.blotto_host = "http://ef3544900e59.ngrok.io/"
         self.append_endpoint = (
             self.blotto_host + "interact"
         )        
@@ -37,6 +37,7 @@ class BlottoSkill(MycroftSkill):
         self.conversation_active = True
         while response is not None and self.conversation_active:
             messages = self.fetch_blotto_response(response)
+            message.
             if len(messages) > 1:
                 for blotto_message in messages[:-1]:
                     self.speak(blotto_message)
@@ -107,7 +108,7 @@ class BlottoSkill(MycroftSkill):
             return [{"text": "Schüps"}]
         messages = self.hit_blotto(utterance)
         print(messages)
-        return messages
+        return messages["text"]
 
     def stop(self):
         self.conversation_active = False
@@ -119,7 +120,7 @@ class BlottoSkill(MycroftSkill):
             self.append_endpoint, data=utterance
         )
        
-        return append_response
+        return append_response.json()
 
 
 def create_skill():
