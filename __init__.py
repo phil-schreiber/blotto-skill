@@ -37,7 +37,6 @@ class BlottoSkill(MycroftSkill):
         self.conversation_active = True
         while response is not None and self.conversation_active:
             messages = self.fetch_blotto_response(response)
-            message.
             if len(messages) > 1:
                 for blotto_message in messages[:-1]:
                     self.speak(blotto_message)
