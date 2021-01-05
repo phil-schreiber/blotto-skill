@@ -96,7 +96,7 @@ class BlottoSkill(MycroftSkill):
                 return response
             return self.handle_final_output(message, attempts=attempts + 1)
         # if we don't have buttons, just get_response
-        return self.get_response(message["text"], num_retries=0)
+        return self.get_response(message, num_retries=0)
 
     def on_failed_button(self, utt):
         return "Was sagst du da?"
