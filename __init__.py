@@ -26,7 +26,7 @@ class BlottoSkill(MycroftSkill):
     def __init__(self):
         super(BlottoSkill, self).__init__(name="BlottoSkill")
         self.conversation_active = False
-        self.blotto_host = "http://f4d76e6da6d3.ngrok.io/"
+        self.blotto_host = "http://11a257408b60.ngrok.io/"
         self.append_endpoint = (
             self.blotto_host + "interact"
         )        
