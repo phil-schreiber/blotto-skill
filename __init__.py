@@ -26,14 +26,10 @@ class BlottoSkill(MycroftSkill):
     def __init__(self):
         super(BlottoSkill, self).__init__(name="BlottoSkill")
         self.conversation_active = False
-        self.blotto_host = "http://localhost:8080/"
+        self.blotto_host = "http://ef3544900e59.ngrok.io"
         self.append_endpoint = (
-            self.blotto_host + "autocomplete"
-        )
-        self.predict_endpoint = self.blotto_host + "autocomplete"
-        self.action_endpoint = (
-            self.blotto_host + "conversations/mycroft_user/execute?include_events=APPLIED"
-        )
+            self.blotto_host + "interact"
+        )        
 
     @intent_handler(IntentBuilder("").require("BlottoOtto"))
     def handle_talk_to_blotto_intent(self, message):
@@ -120,7 +116,7 @@ class BlottoSkill(MycroftSkill):
         
         print(f"sending {utterance} to {self.append_endpoint}")
         append_response = requests.post(
-            self.append_endpoint, json={"text": utterance, "sender": "user"}
+            self.append_endpoint, data=utterance
         )
        
         return append_response
