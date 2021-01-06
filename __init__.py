@@ -115,7 +115,7 @@ class BlottoSkill(MycroftSkill):
 
     def hit_blotto(self, utterance):
         resp = translate_client.translate(utterance, target_language='EN', source_language='DE')
-        print(f"sending {translated} to {self.append_endpoint}")
+        print(f"sending {resp['translatedText']} to {self.append_endpoint}")
         append_response = requests.post(
             self.append_endpoint, data=resp['translatedText']
         )
