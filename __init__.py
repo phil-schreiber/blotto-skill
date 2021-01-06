@@ -39,8 +39,8 @@ class BlottoSkill(MycroftSkill):
         while response is not None and self.conversation_active:
             messages = self.fetch_blotto_response(response)            
             if len(messages) > 1:
-                translated = translate_client.translate(messages, target_language='DE', source_language='EN')
-                self.speak(translated)
+                resp = translate_client.translate(messages, target_language='DE', source_language='EN')                
+                self.speak(resp['translatedText'])
             if len(messages) == 0:
                 messages = ["no response from blotto"]
             response = self.handle_final_output(messages[-1])
@@ -114,10 +114,10 @@ class BlottoSkill(MycroftSkill):
         self.conversation_active = False
 
     def hit_blotto(self, utterance):
-        translated = translate_client.translate(utterance, target_language='EN', source_language='DE')
+        resp = translate_client.translate(utterance, target_language='EN', source_language='DE')
         print(f"sending {translated} to {self.append_endpoint}")
         append_response = requests.post(
-            self.append_endpoint, data=translated
+            self.append_endpoint, data=resp['translatedText']
         )
        
         return append_response.json().get('text')
