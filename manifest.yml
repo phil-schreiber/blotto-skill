@@ -1,5 +1,6 @@
 dependencies:
   # Pip dependencies on PyPI
   python:
+    - google-cloud
     - requests
     - pydeepl

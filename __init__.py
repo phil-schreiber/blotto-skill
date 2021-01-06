@@ -1,12 +1,13 @@
 # Blotto - master of glue code
 
-import pydeepl
+from google.cloud import translate_v2 as translate
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill, intent_handler
 from mycroft.util.log import LOG
 from mycroft.util.parse import match_one
 import requests
 
+translate_client = translate.Client()
 
 class ButtonValidator:
     def __init__(self, values, threshold):
@@ -38,7 +39,7 @@ class BlottoSkill(MycroftSkill):
         while response is not None and self.conversation_active:
             messages = self.fetch_blotto_response(response)            
             if len(messages) > 1:
-                translated = pydeepl.translate(messages, 'DE', from_lang='EN')
+                translated = translate_client.translate(messages, target_language='DE', source_language='EN')
                 self.speak(translated)
             if len(messages) == 0:
                 messages = ["no response from blotto"]
@@ -113,7 +114,7 @@ class BlottoSkill(MycroftSkill):
         self.conversation_active = False
 
     def hit_blotto(self, utterance):
-        translated = pydeepl.translate(utterance, 'EN', from_lang='DE')
+        translated = translate_client.translate(utterance, target_language='EN', source_language='DE')
         print(f"sending {translated} to {self.append_endpoint}")
         append_response = requests.post(
             self.append_endpoint, data=translated
