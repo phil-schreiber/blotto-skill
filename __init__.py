@@ -1,6 +1,6 @@
-# The MIT License (MIT)
-# Copyright (c) 2019 jamesmf
+# Blotto - master of glue code
 
+import pydeepl
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill, intent_handler
 from mycroft.util.log import LOG
@@ -36,9 +36,10 @@ class BlottoSkill(MycroftSkill):
         response = self.get_response("connecting.to.blotto")
         self.conversation_active = True
         while response is not None and self.conversation_active:
-            messages = self.fetch_blotto_response(response)
-            if len(messages) > 1:                
-                self.speak(messages)
+            messages = self.fetch_blotto_response(response)            
+            if len(messages) > 1:
+                translated = pydeepl.translate(messages, 'DE', from_lang='EN')
+                self.speak(translated)
             if len(messages) == 0:
                 messages = ["no response from blotto"]
             response = self.handle_final_output(messages[-1])
@@ -112,10 +113,10 @@ class BlottoSkill(MycroftSkill):
         self.conversation_active = False
 
     def hit_blotto(self, utterance):
-        
-        print(f"sending {utterance} to {self.append_endpoint}")
+        translated = pydeepl.translate(utterance, 'EN', from_lang='DE')
+        print(f"sending {translated} to {self.append_endpoint}")
         append_response = requests.post(
-            self.append_endpoint, data=utterance
+            self.append_endpoint, data=translated
         )
        
         return append_response.json().get('text')
