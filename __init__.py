@@ -43,8 +43,7 @@ class BlottoSkill(MycroftSkill):
                 resp = translate_client.translate(messages, target_language='DE', source_language='EN')                
                 self.speak(resp['translatedText'])
             if len(messages) == 0:
-                messages = ["no response from blotto"]
-            response = self.handle_final_output(messages[-1])
+                messages = ["no response from blotto"]            
 
         self.speak("disconnecting from blotto")
 
