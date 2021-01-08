@@ -6,6 +6,7 @@ from mycroft.skills.core import MycroftSkill, intent_handler
 from mycroft.util.log import LOG
 from mycroft.util.parse import match_one
 import requests
+import json
 
 translate_client = translate.Client()
 
@@ -27,9 +28,9 @@ class BlottoSkill(MycroftSkill):
     def __init__(self):
         super(BlottoSkill, self).__init__(name="BlottoSkill")
         self.conversation_active = False
-        self.blotto_host = "http://796784407dd4.ngrok.io/"
+        self.blotto_host = "https://api-inference.huggingface.co/"
         self.append_endpoint = (
-            self.blotto_host + "interact"
+            self.blotto_host + "models/microsoft/DialoGPT-large"
         )        
 
     @intent_handler(IntentBuilder("").require("BlottoOtto"))
@@ -115,12 +116,13 @@ class BlottoSkill(MycroftSkill):
 
     def hit_blotto(self, utterance):
         resp = translate_client.translate(utterance, target_language='EN', source_language='DE')
+        inputData = json.dumps({"inputs": resp['translatedText'],"options": {"use_cache": True}}) 
         print(f"sending {resp['translatedText']} to {self.append_endpoint}")
         append_response = requests.post(
-            self.append_endpoint, data=resp['translatedText']
+            self.append_endpoint, data=inputData
         )
        
-        return append_response.json().get('text')
+        return append_response.json().get('generated_text')
 
 
 def create_skill():
