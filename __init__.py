@@ -104,6 +104,7 @@ class BlottoSkill(MycroftSkill):
         return "Was sagst du da?"
 
     def fetch_blotto_response(self, utterance):
+        print(utterance)
         if "stop" in utterance.lower():
             self.conversation_active = False
             return [{"text": "Schüps"}]
